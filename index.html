@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThiaggScxecurit · Corrector Inteligente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #090d16;
+  --bg-card: #111827;
+  --bg-card-hover: #162032;
+  --border: #1e293b;
+  --border-focus: #3b82f6;
+  --text: #f3f4f6;
+  --text-muted: #9ca3af;
+  --accent: #22c55e;
+  --accent-hover: #16a34a;
+  --accent-glow: rgba(34, 197, 94, 0.15);
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --radius: 12px;
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-focus: #2563eb;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --accent: #16a34a;
+  --accent-hover: #15803d;
+  --accent-glow: rgba(22, 163, 74, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+main {
+  width: 100%;
+  max-width: 940px;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+p.s {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+p.s b {
+  color: var(--text);
+}
+
+.theme-toggle {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  flex-shrink: 0;
+  margin: 0;
+}
+.theme-toggle:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-focus);
+  transform: scale(1.05);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+textarea, input {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.5;
+  transition: var(--transition);
+}
+
+textarea:focus, input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 14px;
+}
+
+button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.g {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+button.g:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--text-muted);
+  box-shadow: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+li {
+  padding: 12px 14px;
+  border-left: 4px solid var(--border);
+  margin-bottom: 8px;
+  background: var(--bg);
+  border-radius: 0 8px 8px 0;
+  overflow-wrap: anywhere;
+  transition: var(--transition);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+li.error { border-color: var(--error); background: rgba(239, 68, 68, 0.03); }
+li.warning { border-color: var(--warning); background: rgba(245, 158, 11, 0.03); }
+li.info { border-color: var(--info); background: rgba(59, 130, 246, 0.03); }
+
+li small {
+  display: block;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  background: rgba(128,128,128,0.08);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+details {
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+summary:hover {
+  color: var(--border-focus);
+}
+
+.msg {
+  margin-top: 12px;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.msg.bad { color: var(--error); font-weight: 500; }
+
+#fixed {
+  min-height: 340px;
+  white-space: pre;
+  overflow: auto;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--border);
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Empty state / helper guides */
+.empty-guide {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+}
+.empty-guide svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+  stroke: currentColor;
+}
+</style>
+</head>
+<body data-theme="dark">
+<main>
+  <header>
+    <div>
+      <h1>🛡️ ThiaggScxecurit <span class="badge">Corrector</span></h1>
+      <p class="s">En VS Code usa <b>ThiaggScxecurit: Copiar reporte para corregir</b> o el quick fix 📋 y pégalo aquí. Todo se procesa de forma local y segura en tu navegador.</p>
+    </div>
+    <button id="themeToggle" class="theme-toggle" title="Cambiar tema claro/oscuro">🌙</button>
+  </header>
+
+  <div class="card">
+    <h2>1. Pega el reporte de tu análisis</h2>
+    <textarea id="in" placeholder="Pega aquí el reporte copiado desde VS Code…" spellcheck="false"></textarea>
+    <button id="read">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      Leer problemas
+    </button>
+    <div id="m1" class="msg"></div>
+  </div>
+
+  <div class="card" id="c2" hidden>
+    <h2>
+      <span>2. Problemas encontrados</span>
+      <span id="meta" class="badge"></span>
+    </h2>
+    <ul id="list"></ul>
+    <button id="fix">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Corregir automáticamente
+    </button>
+    
+    <details>
+      <summary>✨ Asistencia con IA (Claude) para casos complejos</summary>
+      <p class="msg" style="margin-top: 8px; margin-bottom: 12px;">Tu clave de API se queda únicamente en esta pestaña de tu navegador, nunca se almacena y se envía directamente a Anthropic junto con tu fragmento de código.</p>
+      <input id="key" type="password" placeholder="sk-ant-…" autocomplete="off">
+      <input id="model" value="claude-sonnet-5-5" style="margin-top:8px">
+      <button id="ai" class="g" style="margin-top:12px">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Corregir con IA
+      </button>
+    </details>
+    <div id="m2" class="msg"></div>
+  </div>
+
+  <div class="card" id="c3" hidden>
+    <h2>3. Código corregido y optimizado</h2>
+    <textarea id="fixed" readonly spellcheck="false"></textarea>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <button id="copy">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+        Copiar código
+      </button>
+      <button id="dl" class="g">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Descargar archivo
+      </button>
+    </div>
+    
+    <h2 style="margin-top:24px; font-size: 15px;">Cambios aplicados</h2>
+    <ul id="log"></ul>
+  </div>
+</main>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var R = null;
+
+  // Manejo de tema claro/oscuro
+  var themeToggle = $('themeToggle');
+  themeToggle.onclick = function() {
+    var body = document.body;
+    var isDark = body.getAttribute('data-theme') === 'dark';
+    body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    themeToggle.textContent = isDark ? '☀️' : '🌙';
+  };
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function say(id, t, bad) { 
+    var m = $(id); 
+    m.textContent = t; 
+    m.className = 'msg' + (bad ? ' bad animate-shake' : ''); 
+  }
+
+  // ---------- helpers de corrección ----------
+  var ENV = function (n) { return n.replace(/([a-z])([A-Z])/g, '$1_$2').replace(/\W+/g, '_').toUpperCase(); };
+  var ORIGIN = "process.env.ALLOWED_ORIGIN || 'https://tu-sitio.com'";
+
+  function secret(l, lang, need) {
+    var nm = (l.match(/([A-Za-z_]\w*)["']?\s*[:=]/) || [0, 'SECRET'])[1], v = ENV(nm), env;
+    if (lang === 'python') { need.add('import os'); env = 'os.environ["' + v + '"]'; }
+    else if (lang === 'java') env = 'System.getenv("' + v + '")';
+    else if (lang === 'php') env = "getenv('" + v + "')";
+    else env = 'process.env.' + v;
+    return l.replace(/(["'`])[^"'`]{8,}\1/, env);
+  }
+
+  function sql(l) {
+    var m, ps;
+    if ((m = l.match(/\bf(["'])((?:SELECT|INSERT|UPDATE|DELETE)\b.*?)\1/i))) {
+      ps = [];
+      var s1 = m[2].replace(/'?\{([^}]+)\}'?/g, function (_, e) { ps.push(e); return '%s'; });
+      return l.replace(m[0], '"' + s1 + '", (' + ps.join(', ') + ',)');
+    }
+    if ((m = l.match(/(["'])((?:SELECT|INSERT|UPDATE|DELETE)\b[^"]*?)\1\.format\(([^)]*)\)/i)))
+      return l.replace(m[0], '"' + m[2].replace(/'?\{\}'?/g, '%s') + '", (' + m[3] + ',)');
+    if ((m = l.match(/`((?:SELECT|INSERT|UPDATE|DELETE)\b[^`]*)`/i))) {
+      ps = [];
+      var s2 = m[1].replace(/'?\$\{([^}]+)\}'?/g, function (_, e) { ps.push(e); return '?'; });
+      return l.replace(m[0], '"' + s2 + '", [' + ps.join(', ') + ']');
+    }
+    if ((m = l.match(/(["'])((?:SELECT|INSERT|UPDATE|DELETE)\b[^"']*?)\s*\1\s*\+\s*([^)]+)/i)))
+      return l.replace(m[0], '"' + m[2] + ' ?", [' + m[3].trim() + ']');
+    return null;
+  }
+
+  var FIX = {
+    'secret-generic': secret, 'secret-aws': secret, 'secret-private-key': secret,
+    'secret-github': secret, 'secret-google-key': secret,
+    'js-eval': function (l) { return /new\s+Function/.test(l) ? null : l.replace(/\beval\s*\(/g, 'JSON.parse('); },
+    'js-xss-innerhtml': function (l) {
+      if (/dangerouslySetInnerHTML/.test(l)) return null;
+      return l.replace(/\.(?:innerHTML|outerHTML)(\s*\+?=)/, '.textContent$1')
+        .replace(/insertAdjacentHTML\s*\(/, 'insertAdjacentText(')
+        .replace(/document\.write(?:ln)?\s*\(/, 'document.body.append(');
+    },
+    'js-path-traversal': function (l, _, n) {
+      var re = /(readFile|readFileSync|createReadStream|sendFile)\s*\(\s*(req\.\w+\.\w+)/;
+      if (!re.test(l)) return null;
+      n.add("const path = require('path');");
+      return l.replace(re, "$1(path.join(__dirname, 'public', path.basename($2))");
+    },
+    'js-math-random': function (l) {
+      return l.replace(/Math\.random\(\)\.toString\(36\)\.slice\(2\)/, 'crypto.randomUUID()')
+        .replace(/Math\.random\(\)/g, '(crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296)');
+    },
+    'html-target-blank': function (l) {
+      return l.replace(/target=(["'])_blank\1(?![^>]*rel=)/g, 'target=$1_blank$1 rel=$1noopener noreferrer$1');
+    },
+    'cors-wildcard': function (l) {
+      return l.replace(/\bcors\(\s*\)/, 'cors({ origin: [' + ORIGIN + '] })')
+        .replace(/origin\s*:\s*(["'])\*\1/, 'origin: [' + ORIGIN + ']')
+        .replace(/(Access-Control-Allow-Origin["']?\s*,\s*)(["'])\*\2/, '$1' + ORIGIN);
+    },
+    'electron-node-integration': function (l) { return l.replace(/(nodeIntegration\s*:\s*)true/, '$1false'); },
+    'electron-context-isolation': function (l) { return l.replace(/(contextIsolation\s*:\s*)false/, '$1true'); },
+    'electron-web-security': function (l) { return l.replace(/(webSecurity\s*:\s*)false/, '$1true'); },
+    'firebase-open-rules': function (l) { return l.replace(/if\s+true/, 'if request.auth != null'); },
+    'sql-injection': sql,
+    'weak-hash': function (l) {
+      return l.replace(/createHash\(\s*(["'])(?:md5|sha1)\1\s*\)/i, "createHash('sha256')")
+        .replace(/hashlib\.(?:md5|sha1)\(/, 'hashlib.sha256(')
+        .replace(/getInstance\(\s*"(?:MD5|SHA-?1)"/i, 'getInstance("SHA-256"');
+    },
+    'tls-disabled': function (l) {
+      return l.replace(/(rejectUnauthorized\s*:\s*)false/, '$1true')
+        .replace(/(NODE_TLS_REJECT_UNAUTHORIZED\s*=\s*["']?)0/, function (m, a) { return a + '1'; })
+        .replace(/(verify\s*=\s*)False/, '$1True')
+        .replace(/(InsecureSkipVerify\s*:\s*)true/, '$1false');
+    },
+    'insecure-http': function (l) {
+      return l.replace(/(["'`])http:\/\/(?!localhost|127\.0\.0\.1|0\.0\.0\.0|www\.w3\.org)/g, '$1https://');
+    },
+    'py-pickle': function (l, _, n) {
+      if (/yaml\.load\(/.test(l)) return l.replace(/yaml\.load\(/, 'yaml.safe_load(');
+      n.add('import json');
+      return l.replace(/pickle\.loads?\(/, 'json.loads(');
+    },
+    'py-shell': function (l, _, n) {
+      if (/\beval\(/.test(l)) { n.add('import ast'); return l.replace(/\beval\(/, 'ast.literal_eval('); }
+      if (/os\.system\(/.test(l)) {
+        n.add('import subprocess'); n.add('import shlex');
+        return l.replace(/os\.system\((.*)\)(\s*)$/, 'subprocess.run(shlex.split($1), check=True)$2');
+      }
+      if (/shell\s*=\s*True/.test(l)) {
+        n.add('import shlex');
+        return l.replace(/subprocess\.(\w+)\((\w+),\s*shell\s*=\s*True/, 'subprocess.$1(shlex.split($2)');
+      }
+      return null;
+    },
+    'py-debug': function (l) {
+      return l.replace(/debug\s*=\s*True/, 'debug=False').replace(/^(\s*DEBUG\s*=\s*)True/, '$1False');
+    }
+  };
+
+  function cmt(lang, t) {
+    return lang === 'python' ? '# ' + t : lang === 'html' ? '<!-- ' + t + ' -->' : '// ' + t;
+  }
+
+  function autoFix(r) {
+    var lines = r.code.split('\n'), need = new Set(), log = [], pre = {};
+    r.findings.forEach(function (f) {
+      var i = f.line - 1, line = lines[i];
+      if (line === undefined) return;
+      var fx = FIX[f.id], out = null;
+      try { out = fx ? fx(line, r.language, need) : null; } catch (e) { out = null; }
+      if (out && out !== line) {
+        log.push({ ok: true, line: f.line, title: f.title, before: line.trim(), after: out.trim() });
+        lines[i] = out;
+      } else {
+        var ind = line.match(/^\s*/)[0];
+        (pre[i] = pre[i] || []).push(ind + cmt(r.language, 'TODO(ThiaggScxecurit): ' + (f.title || f.id) + ' → ' + (f.fix || 'revisar a mano')));
+        log.push({ ok: false, line: f.line, title: f.title, before: line.trim(), after: 'Requiere revisión manual (se añadió comentario TODO).' });
+      }
+    });
+    var head = Array.from(need).filter(function (s) { return r.code.indexOf(s) < 0; });
+    var body = [];
+    lines.forEach(function (l, i) { (pre[i] || []).forEach(function (c) { body.push(c); }); body.push(l); });
+    return { code: head.concat(body).join('\n'), log: log };
+  }
+
+  function showFixed(code, log) {
+    $('fixed').value = code;
+    $('c3').hidden = false;
+    var ul = $('log'); ul.textContent = '';
+    (log || []).forEach(function (x) {
+      var li = el('li', x.ok ? 'info' : 'warning');
+      li.appendChild(el('b', '', 'Línea ' + x.line + ' · ' + (x.title || '')));
+      var s1 = el('small'); s1.appendChild(el('code', '', x.before)); li.appendChild(s1);
+      var s2 = el('small'); s2.appendChild(el('code', '', (x.ok ? '→ ' : '⚠ ') + x.after)); li.appendChild(s2);
+      ul.appendChild(li);
+    });
+    if (!log || !log.length) ul.appendChild(el('li', '', 'Corrección generada por IA: revisa el código antes de usarlo.'));
+    $('c3').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  $('read').onclick = function () {
+    try {
+      var r = JSON.parse($('in').value.trim());
+      if (!r || r.tool !== 'ThiaggScxecurit' || typeof r.code !== 'string' || !Array.isArray(r.findings)) throw new Error('formato');
+      R = r;
+    } catch (e) {
+      say('m1', 'No pude leer el reporte. Asegúrate de copiarlo correctamente desde VS Code.', true);
+      return;
+    }
+    say('m1', '');
+    $('meta').textContent = R.file + ' (' + R.language + ') · ' + R.findings.length + ' hallazgos';
+    var ul = $('list'); ul.textContent = '';
+    R.findings.forEach(function (f) {
+      var li = el('li', f.severity || 'info');
+      li.appendChild(el('b', '', 'Línea ' + f.line + ' · ' + (f.title || f.id)));
+      li.appendChild(el('small', '', '→ ' + (f.fix || '')));
+      ul.appendChild(li);
+    });
+    $('c2').hidden = false; 
+    $('c3').hidden = true; 
+    say('m2', '');
+    $('c2').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  $('fix').onclick = function () {
+    var res = autoFix(R), ok = res.log.filter(function (x) { return x.ok; }).length;
+    showFixed(res.code, res.log);
+    say('m2', ok + ' corregidos automáticamente, ' + (res.log.length - ok) + ' requieren revisión manual.');
+  };
+
+  $('ai').onclick = function () {
+    var key = $('key').value.trim();
+    if (!key) { say('m2', 'Por favor ingresa tu API key de Anthropic.', true); return; }
+    var btn = $('ai'); btn.disabled = true; say('m2', 'Consultando con Claude para refinar el código…');
+    var issues = R.findings.map(function (f) { return '- Línea ' + f.line + ': ' + (f.title || f.id) + ' (' + (f.fix || '') + ')'; }).join('\n');
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: $('model').value.trim() || 'claude-sonnet-5-5', max_tokens: 8000,
+        system: 'Eres un experto en seguridad de aplicaciones. Recibes un archivo y una lista de vulnerabilidades. Devuelve el archivo COMPLETO corregido, con todas sus funciones y sin recortar nada, manteniendo el comportamiento original. Responde solo con el código, sin explicaciones ni bloques markdown.',
+        messages: [{ role: 'user', content: 'Archivo: ' + R.file + ' (' + R.language + ')\n\nVulnerabilidades:\n' + issues + '\n\nCódigo:\n' + R.code }]
+      })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d.error) throw new Error(d.error.message);
+      var t = d.content.map(function (b) { return b.type === 'text' ? b.text : ''; }).join('');
+      showFixed(t.replace(/^```[\w-]*\n?/, '').replace(/\n?```\s*$/, ''), []);
+      say('m2', '¡Listo! Código depurado con IA.');
+    }).catch(function (e) { say('m2', 'Error con la IA: ' + e.message, true); })
+      .then(function () { btn.disabled = false; });
+  };
+
+  $('copy').onclick = function () {
+    var t = $('fixed').value;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).catch(function () {
+      $('fixed').select(); document.execCommand('copy');
+    });
+    var btn = $('copy');
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Copiado!';
+    setTimeout(function () { btn.innerHTML = originalHTML; }, 1500);
+  };
+
+  $('dl').onclick = function () {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([$('fixed'].value], { type: 'text/plain' }));
+    a.download = 'fixed-' + (R ? R.file : 'codigo.txt');
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  };
+})();
+</script>
+</body>
+</html>
