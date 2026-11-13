@@ -3,379 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ThiaggScxecurit · Corrector Inteligente</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>ThiaggScxecurit · Corrector</title>
 <style>
-:root {
-  --bg: #090d16;
-  --bg-card: #111827;
-  --bg-card-hover: #162032;
-  --border: #1e293b;
-  --border-focus: #3b82f6;
-  --text: #f3f4f6;
-  --text-muted: #9ca3af;
-  --accent: #22c55e;
-  --accent-hover: #16a34a;
-  --accent-glow: rgba(34, 197, 94, 0.15);
-  --error: #ef4444;
-  --warning: #f59e0b;
-  --info: #3b82f6;
-  --radius: 12px;
-  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f1f5f9;
-  --border: #e2e8f0;
-  --border-focus: #2563eb;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --accent: #16a34a;
-  --accent-hover: #15803d;
-  --accent-glow: rgba(22, 163, 74, 0.12);
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  padding: 40px 20px;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-main {
-  width: 100%;
-  max-width: 940px;
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
-}
-
-h1 {
-  margin: 0 0 6px;
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-h2 {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-p.s {
-  color: var(--text-muted);
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-p.s b {
-  color: var(--text);
-}
-
-.theme-toggle {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  flex-shrink: 0;
-  margin: 0;
-}
-.theme-toggle:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-focus);
-  transform: scale(1.05);
-}
-
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
-  transition: var(--transition);
-  position: relative;
-  overflow: hidden;
-}
-
-.card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-}
-
-textarea, input {
-  width: 100%;
-  background: var(--bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13.5px;
-  line-height: 1.5;
-  transition: var(--transition);
-}
-
-textarea:focus, input:focus {
-  outline: none;
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
-textarea {
-  min-height: 160px;
-  resize: vertical;
-}
-
-button {
-  background: var(--accent);
-  color: #fff;
-  border: 0;
-  border-radius: 8px;
-  padding: 11px 18px;
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-top: 14px;
-}
-
-button:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--accent-glow);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-button.g {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  box-shadow: none;
-}
-
-button.g:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--text-muted);
-  box-shadow: none;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-ul {
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
-}
-
-li {
-  padding: 12px 14px;
-  border-left: 4px solid var(--border);
-  margin-bottom: 8px;
-  background: var(--bg);
-  border-radius: 0 8px 8px 0;
-  overflow-wrap: anywhere;
-  transition: var(--transition);
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-li.error { border-color: var(--error); background: rgba(239, 68, 68, 0.03); }
-li.warning { border-color: var(--warning); background: rgba(245, 158, 11, 0.03); }
-li.info { border-color: var(--info); background: rgba(59, 130, 246, 0.03); }
-
-li small {
-  display: block;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-code {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12.5px;
-  background: rgba(128,128,128,0.08);
-  padding: 2px 5px;
-  border-radius: 4px;
-}
-
-details {
-  margin-top: 20px;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
-}
-
-summary {
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--text);
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.2s;
-}
-
-summary:hover {
-  color: var(--border-focus);
-}
-
-.msg {
-  margin-top: 12px;
-  color: var(--text-muted);
-  font-size: 13.5px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.msg.bad { color: var(--error); font-weight: 500; }
-
-#fixed {
-  min-height: 340px;
-  white-space: pre;
-  overflow: auto;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.badge {
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 20px;
-  background: var(--border);
-  color: var(--text);
-  font-weight: 500;
-}
-
-/* Empty state / helper guides */
-.empty-guide {
-  text-align: center;
-  padding: 30px 20px;
-  color: var(--text-muted);
-}
-.empty-guide svg {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 12px;
-  opacity: 0.4;
-  stroke: currentColor;
-}
+:root{--bg:#f6f7f9;--card:#fff;--tx:#111827;--mu:#6b7280;--bd:#d9dde3;--ac:#16a34a;--er:#dc2626;--wa:#d97706;--in:#2563eb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1e293b;--tx:#e5e7eb;--mu:#94a3b8;--bd:#334155;--ac:#22c55e;--er:#f87171;--wa:#fbbf24;--in:#60a5fa}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:900px;margin:0 auto}
+h1{margin:0 0 4px;font-size:22px}h2{font-size:16px;margin:0 0 10px}
+p.s{color:var(--mu);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:16px}
+textarea,input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:10px;font:13px/1.45 ui-monospace,Consolas,monospace}
+textarea{min-height:150px;resize:vertical}
+button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer;margin:10px 8px 0 0}
+button.g{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+button:disabled{opacity:.5;cursor:wait}
+ul{margin:0;padding-left:0;list-style:none}
+li{padding:8px 10px;border-left:4px solid var(--bd);margin-bottom:6px;background:var(--bg);border-radius:0 6px 6px 0;overflow-wrap:anywhere}
+li.error{border-color:var(--er)}li.warning{border-color:var(--wa)}li.info{border-color:var(--in)}
+li small{display:block;color:var(--mu)}
+code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+details{margin-top:12px}summary{cursor:pointer;font-weight:600}
+.msg{margin-top:10px;color:var(--mu)}.msg.bad{color:var(--er)}
+#fixed{min-height:320px;white-space:pre;overflow:auto}
 </style>
 </head>
-<body data-theme="dark">
+<body>
 <main>
-  <header>
-    <div>
-      <h1>🛡️ ThiaggScxecurit <span class="badge">Corrector</span></h1>
-      <p class="s">En VS Code usa <b>ThiaggScxecurit: Copiar reporte para corregir</b> o el quick fix 📋 y pégalo aquí. Todo se procesa de forma local y segura en tu navegador.</p>
-    </div>
-    <button id="themeToggle" class="theme-toggle" title="Cambiar tema claro/oscuro">🌙</button>
-  </header>
+<h1>🛡️ ThiaggScxecurit · Corrector</h1>
+<p class="s">En VS Code usa <b>ThiaggScxecurit: Copiar reporte para corregir</b> (o el quick fix 📋) y pega aquí el reporte. Todo se procesa en tu navegador.</p>
 
-  <div class="card">
-    <h2>1. Pega el reporte de tu análisis</h2>
-    <textarea id="in" placeholder="Pega aquí el reporte copiado desde VS Code…" spellcheck="false"></textarea>
-    <button id="read">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-      Leer problemas
-    </button>
-    <div id="m1" class="msg"></div>
-  </div>
+<div class="card">
+  <h2>1. Pega el reporte</h2>
+  <textarea id="in" placeholder="Pega aquí el reporte copiado desde VS Code…" spellcheck="false"></textarea>
+  <button id="read">Leer problemas</button>
+  <div id="m1" class="msg"></div>
+</div>
 
-  <div class="card" id="c2" hidden>
-    <h2>
-      <span>2. Problemas encontrados</span>
-      <span id="meta" class="badge"></span>
-    </h2>
-    <ul id="list"></ul>
-    <button id="fix">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      Corregir automáticamente
-    </button>
-    
-    <details>
-      <summary>✨ Asistencia con IA (Claude) para casos complejos</summary>
-      <p class="msg" style="margin-top: 8px; margin-bottom: 12px;">Tu clave de API se queda únicamente en esta pestaña de tu navegador, nunca se almacena y se envía directamente a Anthropic junto con tu fragmento de código.</p>
-      <input id="key" type="password" placeholder="sk-ant-…" autocomplete="off">
-      <input id="model" value="claude-sonnet-5-5" style="margin-top:8px">
-      <button id="ai" class="g" style="margin-top:12px">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        Corregir con IA
-      </button>
-    </details>
-    <div id="m2" class="msg"></div>
-  </div>
+<div class="card" id="c2" hidden>
+  <h2>2. Problemas encontrados <span id="meta" class="msg"></span></h2>
+  <ul id="list"></ul>
+  <button id="fix">⚡ Corregir automáticamente</button>
+  <details>
+    <summary>Corregir con IA (Claude) para casos que no se arreglan solos</summary>
+    <p class="msg">Usa tu propia API key de Anthropic. Se queda solo en esta pestaña, no se guarda y se envía únicamente a api.anthropic.com junto con tu código.</p>
+    <input id="key" type="password" placeholder="sk-ant-…" autocomplete="off">
+    <input id="model" value="claude-sonnet-5-5" style="margin-top:8px">
+    <button id="ai" class="g">🤖 Corregir con IA</button>
+  </details>
+  <div id="m2" class="msg"></div>
+</div>
 
-  <div class="card" id="c3" hidden>
-    <h2>3. Código corregido y optimizado</h2>
-    <textarea id="fixed" readonly spellcheck="false"></textarea>
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-      <button id="copy">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-        Copiar código
-      </button>
-      <button id="dl" class="g">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Descargar archivo
-      </button>
-    </div>
-    
-    <h2 style="margin-top:24px; font-size: 15px;">Cambios aplicados</h2>
-    <ul id="log"></ul>
-  </div>
+<div class="card" id="c3" hidden>
+  <h2>3. Código corregido</h2>
+  <textarea id="fixed" readonly spellcheck="false"></textarea>
+  <button id="copy">Copiar código</button>
+  <button id="dl" class="g">Descargar archivo</button>
+  <h2 style="margin-top:18px">Cambios aplicados</h2>
+  <ul id="log"></ul>
+</div>
 </main>
 
 <script>
@@ -383,26 +69,13 @@ summary:hover {
   var $ = function (id) { return document.getElementById(id); };
   var R = null;
 
-  // Manejo de tema claro/oscuro
-  var themeToggle = $('themeToggle');
-  themeToggle.onclick = function() {
-    var body = document.body;
-    var isDark = body.getAttribute('data-theme') === 'dark';
-    body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    themeToggle.textContent = isDark ? '☀️' : '🌙';
-  };
-
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text !== undefined) e.textContent = text;
     return e;
   }
-  function say(id, t, bad) { 
-    var m = $(id); 
-    m.textContent = t; 
-    m.className = 'msg' + (bad ? ' bad animate-shake' : ''); 
-  }
+  function say(id, t, bad) { var m = $(id); m.textContent = t; m.className = 'msg' + (bad ? ' bad' : ''); }
 
   // ---------- helpers de corrección ----------
   var ENV = function (n) { return n.replace(/([a-z])([A-Z])/g, '$1_$2').replace(/\W+/g, '_').toUpperCase(); };
@@ -436,6 +109,7 @@ summary:hover {
     return null;
   }
 
+  // Cada fixer recibe (línea, lenguaje, set de imports) y devuelve la línea nueva o null si no sabe arreglarla.
   var FIX = {
     'secret-generic': secret, 'secret-aws': secret, 'secret-private-key': secret,
     'secret-github': secret, 'secret-google-key': secret,
@@ -522,7 +196,7 @@ summary:hover {
       } else {
         var ind = line.match(/^\s*/)[0];
         (pre[i] = pre[i] || []).push(ind + cmt(r.language, 'TODO(ThiaggScxecurit): ' + (f.title || f.id) + ' → ' + (f.fix || 'revisar a mano')));
-        log.push({ ok: false, line: f.line, title: f.title, before: line.trim(), after: 'Requiere revisión manual (se añadió comentario TODO).' });
+        log.push({ ok: false, line: f.line, title: f.title, before: line.trim(), after: 'Requiere revisión manual (se añadió un comentario TODO).' });
       }
     });
     var head = Array.from(need).filter(function (s) { return r.code.indexOf(s) < 0; });
@@ -531,6 +205,7 @@ summary:hover {
     return { code: head.concat(body).join('\n'), log: log };
   }
 
+  // ---------- interfaz ----------
   function showFixed(code, log) {
     $('fixed').value = code;
     $('c3').hidden = false;
@@ -552,11 +227,11 @@ summary:hover {
       if (!r || r.tool !== 'ThiaggScxecurit' || typeof r.code !== 'string' || !Array.isArray(r.findings)) throw new Error('formato');
       R = r;
     } catch (e) {
-      say('m1', 'No pude leer el reporte. Asegúrate de copiarlo correctamente desde VS Code.', true);
+      say('m1', 'No pude leer el reporte. Cópialo de nuevo desde VS Code con “Copiar reporte para corregir”.', true);
       return;
     }
     say('m1', '');
-    $('meta').textContent = R.file + ' (' + R.language + ') · ' + R.findings.length + ' hallazgos';
+    $('meta').textContent = '· ' + R.file + ' (' + R.language + ') · ' + R.findings.length + ' hallazgos';
     var ul = $('list'); ul.textContent = '';
     R.findings.forEach(function (f) {
       var li = el('li', f.severity || 'info');
@@ -564,10 +239,7 @@ summary:hover {
       li.appendChild(el('small', '', '→ ' + (f.fix || '')));
       ul.appendChild(li);
     });
-    $('c2').hidden = false; 
-    $('c3').hidden = true; 
-    say('m2', '');
-    $('c2').scrollIntoView({ behavior: 'smooth' });
+    $('c2').hidden = false; $('c3').hidden = true; say('m2', '');
   };
 
   $('fix').onclick = function () {
@@ -578,8 +250,8 @@ summary:hover {
 
   $('ai').onclick = function () {
     var key = $('key').value.trim();
-    if (!key) { say('m2', 'Por favor ingresa tu API key de Anthropic.', true); return; }
-    var btn = $('ai'); btn.disabled = true; say('m2', 'Consultando con Claude para refinar el código…');
+    if (!key) { say('m2', 'Pon tu API key de Anthropic primero.', true); return; }
+    var btn = $('ai'); btn.disabled = true; say('m2', 'Pidiéndole a Claude el código corregido…');
     var issues = R.findings.map(function (f) { return '- Línea ' + f.line + ': ' + (f.title || f.id) + ' (' + (f.fix || '') + ')'; }).join('\n');
     fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -596,7 +268,7 @@ summary:hover {
       if (d.error) throw new Error(d.error.message);
       var t = d.content.map(function (b) { return b.type === 'text' ? b.text : ''; }).join('');
       showFixed(t.replace(/^```[\w-]*\n?/, '').replace(/\n?```\s*$/, ''), []);
-      say('m2', '¡Listo! Código depurado con IA.');
+      say('m2', 'Listo. Revisa el resultado antes de usarlo.');
     }).catch(function (e) { say('m2', 'Error con la IA: ' + e.message, true); })
       .then(function () { btn.disabled = false; });
   };
@@ -606,15 +278,13 @@ summary:hover {
     (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).catch(function () {
       $('fixed').select(); document.execCommand('copy');
     });
-    var btn = $('copy');
-    var originalHTML = btn.innerHTML;
-    btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> ¡Copiado!';
-    setTimeout(function () { btn.innerHTML = originalHTML; }, 1500);
+    $('copy').textContent = '¡Copiado!';
+    setTimeout(function () { $('copy').textContent = 'Copiar código'; }, 1500);
   };
 
   $('dl').onclick = function () {
     var a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([$('fixed'].value], { type: 'text/plain' }));
+    a.href = URL.createObjectURL(new Blob([$('fixed').value], { type: 'text/plain' }));
     a.download = 'fixed-' + (R ? R.file : 'codigo.txt');
     a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
